@@ -1,7 +1,7 @@
 Accounts.oauth.registerService('facebook');
 
 if (Meteor.isClient) {
-
+  var checkMessageInterval = null;
   Meteor.loginWithFacebook = function(options, callback) {
     // support a callback without options
     if (! callback && typeof options === "function") {
@@ -12,8 +12,8 @@ if (Meteor.isClient) {
     var credentialRequestCompleteCallback = Accounts.oauth.credentialRequestCompleteHandler(callback);
 
     var fbLoginSuccess = function (data) {
+      clearTimeout(checkMessageInterval);
       data.cordova = true;
-
       Accounts.callLoginMethod({
         methodArguments: [data],
         userCallback: callback
@@ -26,8 +26,16 @@ if (Meteor.isClient) {
           if (response.status != "connected") {
             facebookConnectPlugin.login(Meteor.settings.public.facebook.permissions,
                 fbLoginSuccess,
-                function (error) { console.log("" + error) }
+                function (error) {
+                  clearTimeout(checkMessageInterval);
+                  console.log("" + error)
+                }
             );
+            if (device.platform === 'Android') {
+                checkMessageInterval = setInterval(function () {
+                    cordova.exec(null, null, '', '', [])
+                }, 300);
+            }
           } else {
             fbLoginSuccess(response);
           }
