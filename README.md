@@ -39,16 +39,16 @@ mrt add accounts-facebook-cordova
   "public": {
     "facebook": {
       "permissions": [
-        "basic_info", 
+        "public_profile", 
         "user_interests", 
         "user_activities", 
         "read_friendlists"
-      ]   
+      ], 
       "profileFields": [
         "name",
         "gender",
         "location"
-      ]   
+      ]     
     }
   }
 }
