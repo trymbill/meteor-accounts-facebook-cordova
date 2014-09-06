@@ -21,8 +21,8 @@ if (Meteor.isClient) {
     }
 
     if (typeof facebookConnectPlugin != "undefined" && Meteor.settings) {
-      facebookConnectPlugin.getLoginStatus( 
-        function (response) { 
+      facebookConnectPlugin.getLoginStatus(
+        function (response) {
           if (response.status != "connected") {
             facebookConnectPlugin.login(Meteor.settings.public.facebook.permissions,
                 fbLoginSuccess,
@@ -49,7 +49,7 @@ if (Meteor.isClient) {
 
 } else {
 
-  if (Meteor.settings && 
+  if (Meteor.settings &&
       Meteor.settings.facebook &&
       Meteor.settings.facebook.appId &&
       Meteor.settings.facebook.secret) {
@@ -75,8 +75,8 @@ if (Meteor.isClient) {
         'services.facebook.id', 'services.facebook.username', 'services.facebook.gender'
       ]
     });
-    
+
   } else {
-    console.log("Meteor settings for accounts-facebook-cordova not configured correctly.")
+    console.log("Meteor settings for accounts-facebook-cordova not configured correctly.");
   }
 }

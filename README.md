@@ -1,9 +1,11 @@
+inspiration from meteor-accounts-facebook-cordova (andrewreedy)
+
 Accounts Facebook Cordova
 ================
 
 ## Introduction
 
-This packages replaces the accounts-facebook package. It works with [phonegap-facebook-plugin](https://github.com/phonegap/phonegap-facebook-plugin) when using cordova and falls back to the facebook package when in a browser. 
+This packages replaces the accounts-facebook package. It works with [phonegap-facebook-plugin](https://github.com/phonegap/phonegap-facebook-plugin) when using cordova and falls back to the facebook package when in a browser.
 
 *Note: Currently only tested with iOS. Will test the other platforms asap.*
 
@@ -39,16 +41,16 @@ mrt add accounts-facebook-cordova
   "public": {
     "facebook": {
       "permissions": [
-        "public_profile", 
-        "user_interests", 
-        "user_activities", 
+        "public_profile",
+        "user_interests",
+        "user_activities",
         "read_friendlists"
-      ], 
+      ],
       "profileFields": [
         "name",
         "gender",
         "location"
-      ]     
+      ]
     }
   }
 }
