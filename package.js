@@ -18,5 +18,5 @@ Package.on_use(function(api) {
   api.use(['http', 'underscore'], server);
 
   api.add_files('facebook_server.js', server);
-  api.add_files('facebook.js', both);
+  api.add_files('facebook.js', 'web.cordova');
 });
