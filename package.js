@@ -1,6 +1,6 @@
 Package.describe({
     summary: "Login service for Facebook accounts (works with cordova)",
-    version: "1.0.0",
+    version: "1.1.0",
     name: "particle4dev:cordova-fb",
     git: "https://github.com/particle4dev/meteor-accounts-facebook-cordova.git"
 });

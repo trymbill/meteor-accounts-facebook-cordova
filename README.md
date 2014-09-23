@@ -22,6 +22,11 @@ This packages replaces the accounts-facebook package. It works with [phonegap-fa
 ================
 
 ##### Package Installation
+Meteor 0.9.0 and up
+````
+meteor add particle4dev:cordova-fb
+````
+Meteor 0.8.3
 ````
 mrt add accounts-facebook-cordova
 ````
@@ -44,11 +49,11 @@ mrt add accounts-facebook-cordova
     "public": {
         "facebook": {
             "permissions": [
-                "public_profile", 
-                "user_interests", 
-                "user_activities", 
+                "public_profile",
+                "user_interests",
+                "user_activities",
                 "read_friendlists"
-            ], 
+            ],
             "profileFields": [
                 "name",
                 "gender",
@@ -66,6 +71,11 @@ Refer to the [phonegap-facebook-plugin readme](https://github.com/phonegap/phone
 ## Final Notes
 
 ##### Running your app with settings
+
+````
+meteor run android-device -p 192.168.1.103:3000 --verbose --settings settings.json
+````
+
 ````
 mrt --settings settings.json
 ````
