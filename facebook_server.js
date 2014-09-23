@@ -7,8 +7,6 @@ Accounts.registerLoginHandler(function(loginRequest) {
   var identity = getIdentity(loginRequest.accessToken);
   var profilePicture = getProfilePicture(loginRequest.accessToken);
 
-  console.log(profilePicture);
-
   var serviceData = {
     accessToken: loginRequest.accessToken,
     expiresAt: (+new Date) + (1000 * loginRequest.expiresIn)
