@@ -47,3 +47,36 @@ var getProfilePicture = function (accessToken) {
                    {response: err.response});
   }
 };
+
+
+  Accounts.oauth.registerService('facebook');
+  if (Meteor.settings &&
+      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"] &&
+      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID &&
+      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret) {
+
+    ServiceConfiguration.configurations.remove({
+      service: "facebook"
+    });
+
+    ServiceConfiguration.configurations.insert({
+      service: "facebook",
+      appId: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID,
+      secret: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret
+    });
+
+    Accounts.addAutopublishFields({
+      // publish all fields including access token, which can legitimately
+      // be used from the client (if transmitted over ssl or on
+      // localhost). https://developers.facebook.com/docs/concepts/login/access-tokens-and-types/,
+      // "Sharing of Access Tokens"
+      forLoggedInUser: ['services.facebook'],
+      forOtherUsers: [
+        // https://www.facebook.com/help/167709519956542
+        'services.facebook.id', 'services.facebook.username', 'services.facebook.gender'
+      ]
+    });
+
+  } else {
+    console.log("Meteor settings for accounts-facebook-cordova not configured correctly.");
+  }
