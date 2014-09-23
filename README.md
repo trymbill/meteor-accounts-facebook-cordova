@@ -34,25 +34,28 @@ mrt add accounts-facebook-cordova
 ##### Meteor settings file (settings.json)
 ````
 {
-  "facebook": {
-    "appId": "[app_id]",
-    "secret": "[app_secret]"
-  },
-  "public": {
-    "facebook": {
-      "permissions": [
-        "public_profile",
-        "user_interests",
-        "user_activities",
-        "read_friendlists"
-      ],
-      "profileFields": [
-        "name",
-        "gender",
-        "location"
-      ]
+    "cordova": {
+        "com.phonegap.plugins.facebookconnect": {
+           "APP_ID": ***,
+           "APP_NAME": ***,
+           "secret": ***
+        }
+    },
+    "public": {
+        "facebook": {
+            "permissions": [
+                "public_profile", 
+                "user_interests", 
+                "user_activities", 
+                "read_friendlists"
+            ], 
+            "profileFields": [
+                "name",
+                "gender",
+                "location"
+            ]
+        }
     }
-  }
 }
 ````
 ================
