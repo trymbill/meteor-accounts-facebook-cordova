@@ -1,7 +1,6 @@
 Accounts.oauth.registerService('facebook');
 
 if (Meteor.isClient) {
-  var checkMessageInterval = null;
   Meteor.loginWithFacebook = function(options, callback) {
     // support a callback without options
     if (! callback && typeof options === "function") {
@@ -12,7 +11,6 @@ if (Meteor.isClient) {
     var credentialRequestCompleteCallback = Accounts.oauth.credentialRequestCompleteHandler(callback);
 
     var fbLoginSuccess = function (data) {
-      clearTimeout(checkMessageInterval);
       data.cordova = true;
       Accounts.callLoginMethod({
         methodArguments: [data],
@@ -27,15 +25,9 @@ if (Meteor.isClient) {
             facebookConnectPlugin.login(Meteor.settings.public.facebook.permissions,
                 fbLoginSuccess,
                 function (error) {
-                  clearTimeout(checkMessageInterval);
                   console.log("" + error)
                 }
             );
-            if (device.platform === 'Android') {
-                checkMessageInterval = setInterval(function () {
-                    cordova.exec(null, null, '', '', [])
-                }, 300);
-            }
           } else {
             fbLoginSuccess(response);
           }
@@ -50,9 +42,9 @@ if (Meteor.isClient) {
 } else {
 
   if (Meteor.settings &&
-      Meteor.settings.facebook &&
-      Meteor.settings.facebook.appId &&
-      Meteor.settings.facebook.secret) {
+      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"] &&
+      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID &&
+      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret) {
 
     ServiceConfiguration.configurations.remove({
       service: "facebook"
@@ -60,8 +52,8 @@ if (Meteor.isClient) {
 
     ServiceConfiguration.configurations.insert({
       service: "facebook",
-      appId: Meteor.settings.facebook.appId,
-      secret: Meteor.settings.facebook.secret
+      appId: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID,
+      secret: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret
     });
 
     Accounts.addAutopublishFields({
