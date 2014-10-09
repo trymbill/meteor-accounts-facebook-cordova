@@ -1,6 +1,6 @@
 Package.describe({
     summary: "Login service for Facebook accounts (works with cordova)",
-    version: "1.1.0",
+    version: "1.1.3",
     name: "particle4dev:cordova-fb",
     git: "https://github.com/particle4dev/meteor-accounts-facebook-cordova.git"
 });
@@ -18,5 +18,5 @@ Package.on_use(function(api) {
   api.use(['http', 'underscore'], server);
 
   api.add_files('facebook_server.js', server);
-  api.add_files('facebook.js', 'web.cordova');
+  api.add_files('facebook.js', 'web');
 });
