@@ -16,11 +16,14 @@
       });
     }
 
+    if (options.requestPermissions == null)
+      options.requestPermissions = Meteor.settings.public.facebook.permissions;
+      
     if (typeof facebookConnectPlugin != "undefined" && Meteor.settings) {
       facebookConnectPlugin.getLoginStatus(
         function (response) {
           if (response.status != "connected") {
-            facebookConnectPlugin.login(Meteor.settings.public.facebook.permissions,
+            facebookConnectPlugin.login(options.requestPermissions,
                 fbLoginSuccess,
                 function (error) {
                   console.log("" + error)
