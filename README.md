@@ -80,5 +80,7 @@ meteor run android-device -p 192.168.1.103:3000 --verbose --settings settings.js
 mrt --settings settings.json
 ````
 ================
+### Example
+[https://github.com/particle4dev/meteor-cordova-facebook-login](https://github.com/particle4dev/meteor-cordova-facebook-login)
 
 If you want more features than this provides, file an issue. Feature requests/contributions are welcome.
