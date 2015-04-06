@@ -1,83 +1,86 @@
+// https://github.com/meteor/meteor/blob/devel/packages/facebook/facebook_server.js
 Accounts.registerLoginHandler(function(loginRequest) {
-  if(!loginRequest.cordova) {
-    return undefined;
-  }
+    if(!loginRequest.cordova) {
+        return undefined;
+    }
 
-  loginRequest = loginRequest.authResponse;
-  var identity = getIdentity(loginRequest.accessToken);
-  var profilePicture = getProfilePicture(loginRequest.accessToken);
+    loginRequest = loginRequest.authResponse;
 
-  var serviceData = {
-    accessToken: loginRequest.accessToken,
-    expiresAt: (+new Date) + (1000 * loginRequest.expiresIn)
-  };
+    var identity = getIdentity(loginRequest.accessToken);
+    var profilePicture = getProfilePicture(loginRequest.accessToken);
 
-  var whitelisted = ['id', 'email', 'name', 'first_name',
-      'last_name', 'link', 'username', 'gender', 'locale', 'age_range'];
+    var serviceData = {
+        accessToken: loginRequest.accessToken,
+        expiresAt: (+new Date) + (1000 * loginRequest.expiresIn)
+    };
 
-  var fields = _.pick(identity, whitelisted);
-  _.extend(serviceData, fields);
+    var whitelisted = ['id', 'email', 'name', 'first_name',
+        'last_name', 'link', 'username', 'gender', 'locale', 'age_range'];
 
-  var options = {profile: {}};
-  var profileFields = _.pick(identity, Meteor.settings.public.facebook.profileFields);
-  _.extend(options.profile, profileFields);
+    var fields = _.pick(identity, whitelisted);
+    _.extend(serviceData, fields);
 
-  options.profile.avatar = profilePicture;
+    var options = {profile: {}};
+    var profileFields = _.pick(identity, Meteor.settings.public.facebook.profileFields);
+    _.extend(options.profile, profileFields);
 
-  return Accounts.updateOrCreateUserFromExternalService("facebook", serviceData, options);
+    options.profile.avatar = profilePicture;
+
+    // https://github.com/meteor/meteor/blob/devel/packages/accounts-base/accounts_server.js#L1129
+    return Accounts.updateOrCreateUserFromExternalService("facebook", serviceData, options);
 
 });
 
 var getIdentity = function (accessToken) {
-  try {
-    return HTTP.get("https://graph.facebook.com/me", {
-      params: {access_token: accessToken}}).data;
-  } catch (err) {
-    throw _.extend(new Error("Failed to fetch identity from Facebook. " + err.message),
-                   {response: err.response});
-  }
+    try {
+        return HTTP.get("https://graph.facebook.com/me", {
+        params: {access_token: accessToken}}).data;
+    } catch (err) {
+        throw _.extend(new Error("Failed to fetch identity from Facebook. " + err.message),
+            {response: err.response});
+    }
 };
 
 var getProfilePicture = function (accessToken) {
-  try {
-    return HTTP.get("https://graph.facebook.com/v2.0/me/picture/?redirect=false", {
-      params: {access_token: accessToken}}).data.data.url;
-  } catch (err) {
-    throw _.extend(new Error("Failed to fetch identity from Facebook. " + err.message),
+    try {
+        return HTTP.get("https://graph.facebook.com/v2.0/me/picture/?redirect=false", {
+        params: {access_token: accessToken}}).data.data.url;
+    } catch (err) {
+        throw _.extend(new Error("Failed to fetch identity from Facebook. " + err.message),
                    {response: err.response});
-  }
+    }
 };
 
-
-  Accounts.oauth.registerService('facebook');
-  if (Meteor.settings &&
-      Meteor.settings["cordova"] &&
-      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"] &&
-      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID &&
-      Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret) {
+Accounts.oauth.registerService('facebook');
+if (Meteor.settings &&
+    Meteor.settings["cordova"] &&
+    Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"] &&
+    Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID &&
+    Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret) {
 
     ServiceConfiguration.configurations.remove({
-      service: "facebook"
+        service: "facebook"
     });
 
     ServiceConfiguration.configurations.insert({
-      service: "facebook",
-      appId: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID,
-      secret: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret
+        service: "facebook",
+        appId: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].APP_ID,
+        secret: Meteor.settings["cordova"]["com.phonegap.plugins.facebookconnect"].secret
     });
 
+
+    // https://github.com/meteor/meteor/blob/devel/packages/accounts-facebook/facebook.js#L15
     Accounts.addAutopublishFields({
-      // publish all fields including access token, which can legitimately
-      // be used from the client (if transmitted over ssl or on
-      // localhost). https://developers.facebook.com/docs/concepts/login/access-tokens-and-types/,
-      // "Sharing of Access Tokens"
-      forLoggedInUser: ['services.facebook'],
-      forOtherUsers: [
-        // https://www.facebook.com/help/167709519956542
-        'services.facebook.id', 'services.facebook.username', 'services.facebook.gender'
-      ]
+        // publish all fields including access token, which can legitimately
+        // be used from the client (if transmitted over ssl or on
+        // localhost). https://developers.facebook.com/docs/concepts/login/access-tokens-and-types/,
+        // "Sharing of Access Tokens"
+        forLoggedInUser: ['services.facebook'],
+        forOtherUsers: [
+            // https://www.facebook.com/help/167709519956542
+            'services.facebook.id', 'services.facebook.username', 'services.facebook.gender'
+        ]
     });
-
-  } else {
+} else {
     console.log("Meteor settings for accounts-facebook-cordova not configured correctly.");
-  }
+}

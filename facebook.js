@@ -2,40 +2,38 @@
   Meteor.loginWithFacebook = function(options, callback) {
     // support a callback without options
     if (! callback && typeof options === "function") {
-      callback = options;
-      options = null;
+        callback = options;
+        options = null;
     }
 
     var credentialRequestCompleteCallback = Accounts.oauth.credentialRequestCompleteHandler(callback);
 
     var fbLoginSuccess = function (data) {
-      data.cordova = true;
-      Accounts.callLoginMethod({
-        methodArguments: [data],
-        userCallback: callback
-      });
+        data.cordova = true;
+        Accounts.callLoginMethod({
+            methodArguments: [data],
+            userCallback: callback
+        });
     }
 
     if (options.requestPermissions == null)
-      options.requestPermissions = Meteor.settings.public.facebook.permissions;
+        options.requestPermissions = Meteor.settings.public.facebook.permissions;
       
     if (typeof facebookConnectPlugin != "undefined" && Meteor.settings) {
-      facebookConnectPlugin.getLoginStatus(
-        function (response) {
-          if (response.status != "connected") {
-            facebookConnectPlugin.login(options.requestPermissions,
-                fbLoginSuccess,
-                function (error) {
-                  console.log("" + error)
+        facebookConnectPlugin.getLoginStatus(
+            function (response) {
+                if (response.status != "connected") {
+                    facebookConnectPlugin.login(options.requestPermissions,
+                        fbLoginSuccess,
+                        callback
+                    );
+                } else {
+                    fbLoginSuccess(response);
                 }
-            );
-          } else {
-            fbLoginSuccess(response);
-          }
-        },
-        function (error) { console.log("" + error) }
-      );
+            },
+            callback
+        );
     } else {
-      Facebook.requestCredential(options, credentialRequestCompleteCallback);
+        Facebook.requestCredential(options, credentialRequestCompleteCallback);
     }
   };
