@@ -15,6 +15,17 @@ Cordova.depends({
     'com.phonegap.plugins.facebookconnect': '0.11.0'
 });
 
+Package.registerBuildPlugin({
+    name: 'configuration',
+    use: [
+        'check',
+        'ejson'
+    ],
+    sources: [
+        'plugin/compile.configuration.plugin.js'
+    ]
+});
+
 Package.on_use(function(api) {
     api.versionsFrom("1.0");
     api.use([
@@ -27,6 +38,10 @@ Package.on_use(function(api) {
     api.imply('accounts-base', both);
     api.use(['http', 'underscore'], server);
 
-    api.add_files('facebook_server.js', server);
+    api.add_files(['src/common.js'], both);
+    api.add_files(['src/server.key.js', 'facebook_server.js'], server);
     api.add_files('facebook.js', 'web');
+
+    if(api.export)
+        api.export('CFB');
 });
