@@ -10,7 +10,8 @@ var archConfig = {
     },
     // cordova
     'web.cordova': function(config) {
-        // console.log(config, 'web.cordova');
+        var r = config.permissions;
+        return r;
     },
     // server
     'os': function(config) {
@@ -18,7 +19,6 @@ var archConfig = {
         r.APP_ID = config.cordova.APP_ID;
         r.secret = config.cordova.secret;
         return r;
-        // console.log(config, 'os');
     }
 };
 var configStringify = function(config) {

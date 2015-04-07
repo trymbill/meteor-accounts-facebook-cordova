@@ -29,6 +29,7 @@ Package.registerBuildPlugin({
 Package.on_use(function(api) {
     api.versionsFrom("1.0");
     api.use([
+        'underscore',
         'accounts-base',
         'accounts-oauth',
         'facebook',
@@ -36,11 +37,23 @@ Package.on_use(function(api) {
     ], both);
     // Export Accounts (etc) to packages using this one.
     api.imply('accounts-base', both);
-    api.use(['http', 'underscore'], server);
+    api.use(['http'], server);
 
+    // Files
     api.add_files(['src/common.js'], both);
-    api.add_files(['src/server.key.js', 'facebook_server.js'], server);
+
+    api.add_files([
+        'src/server/server.key.js',
+        'src/server/getIdentity.js',
+        'facebook_server.js'
+    ], server);
+
     api.add_files('facebook.js', 'web');
+
+    api.add_files([
+        'src/cordova/permissions.js',
+        'src/cordova/login.js'
+    ], cordova);
 
     if(api.export)
         api.export('CFB');
