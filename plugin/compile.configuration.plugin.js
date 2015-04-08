@@ -6,7 +6,7 @@ var Fiber = Npm.require('fibers');
 var archConfig = {
     // client
     'web.browser': function(config) {
-        // console.log(config, 'web.browser');
+        return {};
     },
     // cordova
     'web.cordova': function(config) {
@@ -18,6 +18,7 @@ var archConfig = {
         var r = {};
         r.APP_ID = config.cordova.APP_ID;
         r.secret = config.cordova.secret;
+        r.profileFields = config.profileFields;
         return r;
     }
 };

@@ -37,24 +37,27 @@ Package.on_use(function(api) {
     ], both);
     // Export Accounts (etc) to packages using this one.
     api.imply('accounts-base', both);
-    api.use(['http'], server);
-
+    api.use(['http', 'random'], server);
+    api.use(['accounts-ui'], client);
     // Files
     api.add_files(['src/common.js'], both);
 
     api.add_files([
-        'src/server/server.key.js',
-        'src/server/getIdentity.js',
-        'facebook_server.js'
+        'src/server/serverKey.js',
+        'src/server/api.js',
+        'src/server/loginHandler.js'
     ], server);
-
-    api.add_files('facebook.js', 'web');
 
     api.add_files([
         'src/cordova/permissions.js',
-        'src/cordova/login.js'
+        'src/cordova/api.js'
     ], cordova);
 
+    api.add_files([
+        'src/browser/config.js'
+    ], browser);
+
+    api.add_files('src/login.js', 'web');
     if(api.export)
         api.export('CFB');
 });
