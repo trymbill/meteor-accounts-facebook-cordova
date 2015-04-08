@@ -30,7 +30,7 @@ meteor add particle4dev:cordova-fb
 
 ================
 
-##### Meteor settings file (cordova.facebook.json)
+##### Config file (cordova.facebook.json)
 ````
 {
     "cordova": {
@@ -63,6 +63,16 @@ meteor add particle4dev:cordova-fb
 }
 ````
 ================
+
+### API
+* CFB.getLoginStatus(client only)
+* CFB.loginCodova(client only)
+* CFB.shareFeed(client only)
+* CFB.share(client only)
+* The Graph API (incomplete)
+* CFB.getIdentity(server only)
+* CFB.getProfilePicture(server only)
+* The Graph API (incomplete)
 
 ### Cordova Setup Guide
 Refer to the [phonegap-facebook-plugin readme](https://github.com/phonegap/phonegap-facebook-plugin)
